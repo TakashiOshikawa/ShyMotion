@@ -1,4 +1,4 @@
-package tokyo.shymotion.model
+package tokyo.shymotion.model.table
 
 import org.joda.time.DateTime
 import scalikejdbc.WrappedResultSet
