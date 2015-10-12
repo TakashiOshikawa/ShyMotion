@@ -2,6 +2,7 @@ package tokyo.shymotion.model
 
 import org.joda.time.DateTime
 import scalikejdbc._
+import tokyo.shymotion.model.table.{InsteadOfTweetTable, InsteadOfTweet}
 
 /**
  * Created by oshikawatakashi on 2015/10/12.
