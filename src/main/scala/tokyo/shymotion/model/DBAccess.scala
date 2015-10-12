@@ -9,7 +9,7 @@ trait DBAccess {
 
   //DB接続設定
   Class.forName("com.mysql.jdbc.Driver")
-  ConnectionPool.singleton("jdbc:mysql://localhost/draftt", "scaler", "scaler")
+  ConnectionPool.singleton("jdbc:mysql://localhost/shymotion", "scaler", "scaler")
 
 }
 

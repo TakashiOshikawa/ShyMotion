@@ -1,6 +1,7 @@
-package tokyo.shymotion.model
+package tokyo.shymotion.model.DAO
 
 import scalikejdbc._
+import tokyo.shymotion.model.DBAccess
 import tokyo.shymotion.model.table.ReplyMessage
 
 /**
