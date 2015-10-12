@@ -4,7 +4,8 @@ import akka.actor.Actor
 import spray.http.MediaTypes._
 import spray.routing._
 import tokyo.shymotion.controller.TweetController
-import tokyo.shymotion.model.InsteadOfTweetDAO
+import tokyo.shymotion.model.DAO.UserDAO
+import tokyo.shymotion.model.InsteadOfTweet
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -50,22 +51,27 @@ trait MyService extends HttpService {
           }
       }
     } ~
-    path("find") {
-      get {
-        complete {
-          val student = InsteadOfTweetDAO.members
-          println( student )
-          "ss"
+    path("insert") {
+      formFields('user_id) { (user_id) =>
+        post {
+          complete {
+//            val existUser = UserDAO.isExistTwitterUserID(user_id)
+            val user = UserDAO.createUser(user_id)
+            println( user )
+            "" + user
+          }
         }
       }
     } ~
-    path("insert") {
+    path("posttweet") {
       formFields('user_id, 'body) { (user_id, body) =>
-        post {
-          complete {
-            val gen = InsteadOfTweetDAO.insertTweet(user_id, Some(body))
-            println( gen )
-            "" + gen
+        validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
+          post {
+            complete {
+              val tweet = InsteadOfTweet.createPostTweet(user_id, body)
+              // TODO JSON形式で返却
+              "" + tweet
+            }
           }
         }
       }

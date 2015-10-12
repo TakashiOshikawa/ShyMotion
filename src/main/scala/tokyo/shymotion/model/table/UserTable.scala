@@ -9,14 +9,14 @@ import scalikejdbc.WrappedResultSet
 case class User
     (
       user_id: Long,
-      twitter_user_id: Option[String]
+      twitter_user_id: String
     )
 
 object UserTable {
 
   val allColumn = (res: WrappedResultSet) => User(
     user_id = res.long("user_id"),
-    twitter_user_id = res.stringOpt("twitter_user_id")
+    twitter_user_id = res.string("twitter_user_id")
   )
 
 }
