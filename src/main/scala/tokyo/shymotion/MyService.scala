@@ -5,7 +5,7 @@ import spray.http.MediaTypes._
 import spray.routing._
 import tokyo.shymotion.controller.TweetController
 import tokyo.shymotion.model.DAO.UserDAO
-import tokyo.shymotion.model.InsteadOfTweet
+import tokyo.shymotion.model.InsteadOfTweetModel
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -68,11 +68,18 @@ trait MyService extends HttpService {
         validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
           post {
             complete {
-              val tweet = InsteadOfTweet.createPostTweet(user_id, body)
-              // TODO JSON形式で返却
+              val tweet = InsteadOfTweetModel.createPostTweet(user_id, body)
               "" + tweet
             }
           }
+        }
+      }
+    } ~
+    path("tweet" / ":instead_of_tweet_id") {
+      get {
+        complete {
+          val tweet = InsteadOfTweetModel.getTestJsonVal
+          "show tweet messge : " + tweet
         }
       }
     }

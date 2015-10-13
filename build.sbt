@@ -19,6 +19,7 @@ libraryDependencies ++= {
     "org.scalikejdbc"     %%  "scalikejdbc"    % "2.2.+",
     "org.slf4j"           %   "slf4j-simple"   % "1.7.+",
     "mysql"               %   "mysql-connector-java" % "5.1.29",
+    "com.typesafe.play"   %   "play-json_2.11" % "2.4.2",
     "org.specs2"          %%  "specs2-core"    % "2.3.11" % "test"
   )
 }
