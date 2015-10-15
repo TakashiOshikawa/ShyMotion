@@ -11,8 +11,7 @@ import tokyo.shymotion.model.table.{ResInsteadOfTweet, InsteadOfTweetTable, Inst
  */
 object InsteadOfTweetModel extends InsteadOfTweetTable {
 
-  // 投稿ツイート登録処理
-  // TODO Tweet内容をJSON形式で返却する Json
+  // 投稿ツイート登録処理 Tweet内容をJSON形式で返却する
   def createPostTweet(twitter_user_id: String, body: String): JsValue = {
     val user = UserDAO.isExistTwitterUserID(twitter_user_id).headOption
     val user_id = user match {
@@ -24,11 +23,11 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
     val ins_tweet = InsteadOfTweetDAO.createTweet(user_id, Some(body))
     val url = generateURL(ins_tweet.instead_of_tweet_id)
     val tweet_json = Json.toJson( ResInsteadOfTweet(twitter_user_id, url, ins_tweet ) )
-    // TODO play.jsonの検証途中！
     tweet_json
   }
 
 
+  // TEST FUNCTION TODO 後々削除
   def getTestJsonVal() = {
     val tweet = Json.toJson( InsteadOfTweet(1,1,Some("sss"), DateTime.now() ))
     val res_tweet = ResInsteadOfTweet("testTwitterID", "http://shymotion.tokyo", InsteadOfTweet(1,1,Some("sss"), DateTime.now()) )
@@ -37,8 +36,14 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
 
   // 投稿ツイート取得処理
-  def findPostTwitter(instead_of_tweet_id: Long): InsteadOfTweet =
-    InsteadOfTweetDAO.findTweetByInsTweetID(instead_of_tweet_id)
+  def findPostTweet(instead_of_tweet_id: Long): JsValue = {
+    val tweet: Option[List[InsteadOfTweet]] = InsteadOfTweetDAO.findTweetByInsTweetID(instead_of_tweet_id)
+    tweet match {
+      case Some(List(InsteadOfTweet(_,_,_,_))) => Json.toJson(tweet.head)
+      case Some(_)                    => Json.toJson(InsteadOfTweet(0,0,Some(""),DateTime.now()))
+      case None => Json.toJson(InsteadOfTweet(0,0,Some(""),DateTime.now()))
+    }
+  }
 
 
   // 投稿時URL生成処理
