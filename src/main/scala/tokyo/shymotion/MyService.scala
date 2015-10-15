@@ -6,7 +6,7 @@ import spray.http.MediaTypes._
 import spray.routing._
 import tokyo.shymotion.controller.TweetController
 import tokyo.shymotion.model.DAO.UserDAO
-import tokyo.shymotion.model.InsteadOfTweetModel
+import tokyo.shymotion.model.{ReplyMessageModel, InsteadOfTweetModel}
 
 // we don't implement our route structure directly in the service actor because
 // we want to be able to test it independently, without having to spin up an actor
@@ -25,6 +25,8 @@ class MyServiceActor extends Actor with MyService {
 
 // this trait defines our service behavior independently from the service actor
 trait MyService extends HttpService {
+
+  // TODO ディレクティブを分ける
 
   val myRoute =
     path("") {
@@ -82,6 +84,28 @@ trait MyService extends HttpService {
           complete {
             val tweet: JsValue = InsteadOfTweetModel.findPostTweet(instead_of_tweet_id)
             tweet+""
+          }
+        }
+      }
+    } ~
+    path("reply" / IntNumber ) { instead_of_tweet_id =>
+      formFields('body) { body =>
+        post {
+          respondWithMediaType(`application/json`) {
+            complete {
+              val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body) )
+              res_msg+""
+            }
+          }
+        }
+      }
+    } ~
+    path("reply" / IntNumber / IntNumber / IntNumber ) { (instead_of_tweet_id, start, num) =>
+      get {
+        respondWithMediaType(`application/json`) {
+          complete {
+            val rep_msg = ReplyMessageModel.findReplyMessage(instead_of_tweet_id, start, num)
+            rep_msg + ""
           }
         }
       }
