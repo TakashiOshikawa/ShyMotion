@@ -26,7 +26,7 @@ object InsteadOfTweetDAO extends DBAccess {
     }
   }
 
-  def createTweet(user_id: Long, body: Option[String]): InsteadOfTweet = {
+  def insertTweet(user_id: Long, body: Option[String]): InsteadOfTweet = {
     DB localTx { implicit session =>
       val instead_of_tweet_id = sql"INSERT INTO instead_of_tweet (user_id, body) values (${user_id}, ${body})"
         .updateAndReturnGeneratedKey.apply()

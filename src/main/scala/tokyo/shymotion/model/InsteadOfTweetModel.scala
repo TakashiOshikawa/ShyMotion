@@ -20,7 +20,7 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
     }
 
     TweetController.tweetForUserID(twitter_user_id, body)
-    val ins_tweet = InsteadOfTweetDAO.createTweet(user_id, Some(body))
+    val ins_tweet = InsteadOfTweetDAO.insertTweet(user_id, Some(body))
     val url = generateURL(ins_tweet.instead_of_tweet_id)
     val tweet_json = Json.toJson( ResInsteadOfTweet(twitter_user_id, url, ins_tweet ) )
     tweet_json
