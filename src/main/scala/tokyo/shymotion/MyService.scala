@@ -1,6 +1,7 @@
 package tokyo.shymotion
 
 import akka.actor.Actor
+import play.api.libs.json.JsValue
 import spray.http.MediaTypes._
 import spray.routing._
 import tokyo.shymotion.controller.TweetController
@@ -75,11 +76,13 @@ trait MyService extends HttpService {
         }
       }
     } ~
-    path("tweet" / ":instead_of_tweet_id") {
+    path("tweet" / IntNumber ) { instead_of_tweet_id =>
       get {
-        complete {
-          val tweet = InsteadOfTweetModel.getTestJsonVal
-          "show tweet messge : " + tweet
+        respondWithMediaType(`application/json`) {
+          complete {
+            val tweet: JsValue = InsteadOfTweetModel.findPostTweet(instead_of_tweet_id)
+            tweet+""
+          }
         }
       }
     }

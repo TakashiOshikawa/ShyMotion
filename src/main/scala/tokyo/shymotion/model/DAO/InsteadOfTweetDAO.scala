@@ -11,11 +11,12 @@ import tokyo.shymotion.model.table.{InsteadOfTweet, InsteadOfTweetTable}
 object InsteadOfTweetDAO extends DBAccess {
 
 
-  def findTweetByInsTweetID(instead_of_tweet_id: Long): InsteadOfTweet = {
-    DB readOnly { implicit session =>
+  def findTweetByInsTweetID(instead_of_tweet_id: Long): Option[List[InsteadOfTweet]] = {
+    val tweet = DB readOnly { implicit session =>
       sql"SELECT * FROM instead_of_tweet WHERE instead_of_tweet_id = ${instead_of_tweet_id}"
-        .map(InsteadOfTweetTable.allColumn).list.apply().head
+        .map(InsteadOfTweetTable.allColumn).list.apply()
     }
+    Some(tweet)
   }
 
   def findTweetByUserID(user_id: Long): List[InsteadOfTweet] = {
