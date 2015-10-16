@@ -18,9 +18,9 @@ object ReplyMessageModel extends ReplyMessageTable {
   def findReplyMessage(instead_of_tweet_id: Long, start: Long, num: Long): JsValue = {
     val res_msg = ReplyMessageDAO.findReplysByInsTweetID(instead_of_tweet_id, start, num)
     res_msg match {
-      case Some( List(ReplyMessage(_,_,_,_)) ) => Json.toJson(res_msg.head)
-      case Some(_)                             => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
-      case None                                => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
+      case Some( List(ReplyMessage(_,_,_,_), _*) ) => Json.toJson(res_msg.head)
+      case Some(_)                                 => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
+      case None                                    => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
     }
   }
 

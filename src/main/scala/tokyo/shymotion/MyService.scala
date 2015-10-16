@@ -101,11 +101,13 @@ trait MyService extends HttpService {
       }
     } ~
     path("reply" / IntNumber / IntNumber / IntNumber ) { (instead_of_tweet_id, start, num) =>
-      get {
-        respondWithMediaType(`application/json`) {
-          complete {
-            val rep_msg = ReplyMessageModel.findReplyMessage(instead_of_tweet_id, start, num)
-            rep_msg + ""
+      validate(start >= 1, s"Invalid Request!") {
+        get {
+          respondWithMediaType(`application/json`) {
+            complete {
+              val rep_msg = ReplyMessageModel.findReplyMessage(instead_of_tweet_id, start, num)
+              rep_msg + ""
+            }
           }
         }
       }

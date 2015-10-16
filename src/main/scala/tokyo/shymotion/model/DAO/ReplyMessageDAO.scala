@@ -12,7 +12,7 @@ object ReplyMessageDAO extends DBAccess {
 
   def findReplysByInsTweetID(ins_tweet_id: Long, start: Long, num: Long): Option[List[ReplyMessage]] = {
     val rep_msg = DB readOnly { implicit session =>
-      sql"SELECT * FROM reply_message WHERE instead_of_tweet_id = ${ins_tweet_id} LIMIT ${start}, ${num} "
+      sql"SELECT * FROM reply_message WHERE instead_of_tweet_id = ${ins_tweet_id} LIMIT ${start-1}, ${num} "
         .map(ReplyMessageTable.allColumn).list.apply()
     }
     Some(rep_msg)
