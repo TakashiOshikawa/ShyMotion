@@ -1,9 +1,9 @@
 import System.Process
 
 {-
-  1.drafttデータベースを削除
-  2.drafttデータベースを作成
-  3.scalerにdrafttデータベースの操作権限付与
+  1.shymotionデータベースを削除
+  2.shymotionデータベースを作成
+  3.scalerにshymotionデータベースの操作権限付与
  -}
 
 main = do
