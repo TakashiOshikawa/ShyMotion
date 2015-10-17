@@ -1,33 +1,24 @@
 package com.example
 
+import org.joda.time.DateTime
 import org.specs2.mutable.Specification
+import play.api.libs.json.Json
 import spray.testkit.Specs2RouteTest
-import spray.http._
-import StatusCodes._
 import tokyo.shymotion.MyService
+import tokyo.shymotion.model.table.{InsteadOfTweetTable, InsteadOfTweet}
 
-class MyServiceSpec extends Specification with Specs2RouteTest with MyService {
+class MyServiceSpec extends Specification with Specs2RouteTest with MyService with InsteadOfTweetTable {
   def actorRefFactory = system
   
   "MyService" should {
 
-    "return a greeting for GET requests to the root path" in {
-      Get() ~> route ~> check {
-        responseAs[String] must contain("Say hello")
+    "case class Json" in {
+      val time = DateTime.now()
+      val tweet_json = Json.toJson(InsteadOfTweet(0, 0, Some("test"), time))
+      tweet_json.toString mustEqual {
+           s"""{"instead_of_tweet_id":0,"user_id":0,"body":"test","created_at":${time.getMillis}}"""
       }
     }
 
-    "leave GET requests to other paths unhandled" in {
-      Get("/kermit") ~> route ~> check {
-        handled must beFalse
-      }
-    }
-
-    "return a MethodNotAllowed error for PUT requests to the root path" in {
-      Put() ~> sealRoute(route) ~> check {
-        status === MethodNotAllowed
-        responseAs[String] === "HTTP method not allowed, supported methods: GET"
-      }
-    }
   }
 }
