@@ -46,6 +46,16 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
   }
 
 
+  // TwitterユーザIDからTweetを取得
+  def findTweetByUserID(twitter_user_id: String): JsValue = {
+    val user = UserDAO.isExistTwitterUserID(twitter_user_id).headOption
+    user match {
+      case Some(_) => Json.toJson( InsteadOfTweetDAO.findTweetByUserID(user.get.user_id) )
+      case None => Json.toJson( InsteadOfTweetDAO.findTweetByUserID( 0 ) )
+    }
+  }
+
+
   // 投稿時URL生成処理
   def generateURL(ins_tweet_id: Long): String =
     "http://shymotion.tokyo/tweet/" + ins_tweet_id

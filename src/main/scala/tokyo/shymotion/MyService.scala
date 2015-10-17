@@ -85,6 +85,18 @@ trait MyService extends HttpService {
           }
         }
       }
+    } ~
+    path("tweetbyuserid" / Segment ) { twitter_user_id =>
+      validate(twitter_user_id.nonEmpty, s"Invalid Request") {
+        get {
+          respondWithMediaType(`application/json`) {
+            complete {
+              val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id)
+              tweets + ""
+            }
+          }
+        }
+      }
     }
 
 }
