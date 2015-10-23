@@ -10,10 +10,10 @@ object TwitterSingleton {
 
   private val cb: ConfigurationBuilder = new ConfigurationBuilder()
   cb.setDebugEnabled(true)
-    .setOAuthConsumerKey("--------------------------")
-    .setOAuthConsumerSecret("--------------------------")
-    .setOAuthAccessToken("--------------------------")
-    .setOAuthAccessTokenSecret("--------------------------")
+    .setOAuthConsumerKey("----------------------")
+    .setOAuthConsumerSecret("----------------------")
+    .setOAuthAccessToken("-------------------------")
+    .setOAuthAccessTokenSecret("---------------------")
   private val tf: TwitterFactory = new TwitterFactory(cb.build())
   def getInstance: Twitter = tf.getInstance()
 

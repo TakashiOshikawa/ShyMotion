@@ -2,6 +2,7 @@ package tokyo.shymotion
 
 import akka.actor.Actor
 import play.api.libs.json.JsValue
+import spray.http.HttpHeaders.RawHeader
 import spray.http.MediaTypes._
 import spray.routing._
 import tokyo.shymotion.model.{InsteadOfTweetModel, ReplyMessageModel}
@@ -41,58 +42,70 @@ trait MyService extends HttpService {
       }
     } ~
     path("tweet") {
-      formFields('user_id, 'body) { (user_id, body) =>
-        validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
-          post {
-            complete {
-              val tweet = InsteadOfTweetModel.createPostTweet(user_id, body)
-              "" + tweet
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+        formFields('user_id, 'body) { (user_id, body) =>
+          validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
+            post {
+              respondWithMediaType(`application/json`) {
+                complete {
+                  val tweet = InsteadOfTweetModel.createPostTweet(user_id, body)
+                  "" + tweet
+                }
+              }
             }
           }
         }
       }
     } ~
     path("tweet" / IntNumber ) { instead_of_tweet_id =>
-      get {
-        respondWithMediaType(`application/json`) {
-          complete {
-            val tweet: JsValue = InsteadOfTweetModel.findPostTweet(instead_of_tweet_id)
-            tweet+""
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+        get {
+          respondWithMediaType(`application/json`) {
+            complete {
+              val tweet: JsValue = InsteadOfTweetModel.findPostTweet(instead_of_tweet_id)
+              tweet + ""
+            }
           }
         }
       }
     } ~
     path("reply" / IntNumber ) { instead_of_tweet_id =>
-      formFields('body) { body =>
-        post {
-          respondWithMediaType(`application/json`) {
-            complete {
-              val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body) )
-              res_msg+""
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+        formFields('body) { body =>
+          post {
+            respondWithMediaType(`application/json`) {
+              complete {
+                val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body))
+                res_msg + ""
+              }
             }
           }
         }
       }
     } ~
     path("reply" / IntNumber / IntNumber / IntNumber ) { (instead_of_tweet_id, start, num) =>
-      validate(start >= 1, s"Invalid Request!") {
-        get {
-          respondWithMediaType(`application/json`) {
-            complete {
-              val rep_msg = ReplyMessageModel.findReplyMessage(instead_of_tweet_id, start, num)
-              rep_msg + ""
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+        validate(start >= 1, s"Invalid Request!") {
+          get {
+            respondWithMediaType(`application/json`) {
+              complete {
+                val rep_msg = ReplyMessageModel.findReplyMessage(instead_of_tweet_id, start, num)
+                rep_msg + ""
+              }
             }
           }
         }
       }
     } ~
     path("tweetbyuserid" / Segment ) { twitter_user_id =>
-      validate(twitter_user_id.nonEmpty, s"Invalid Request") {
-        get {
-          respondWithMediaType(`application/json`) {
-            complete {
-              val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id)
-              tweets + ""
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+        validate(twitter_user_id.nonEmpty, s"Invalid Request") {
+          get {
+            respondWithMediaType(`application/json`) {
+              complete {
+                val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id)
+                tweets + ""
+              }
             }
           }
         }
