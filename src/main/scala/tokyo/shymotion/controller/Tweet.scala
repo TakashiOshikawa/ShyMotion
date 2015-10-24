@@ -12,14 +12,12 @@ object TweetController {
   def tweetPostSentence(sen: String) = {
     val twitter = TwitterSingleton.getInstance
     val status: Status = twitter.updateStatus(sen)
-    System.out.println("Successfully updated the status to [" + status.getText() + "].")
   }
 
   // 指定ユーザに対してのツイートを行う
-  def tweetForUserID(userID: String, sen: String) = {
+  def tweetForUserID(user_id: String, sen: String) = {
     val twitter = TwitterSingleton.getInstance
-    val status: Status = twitter.updateStatus("@" + userID + " " + sen)
-    System.out.println("Successfully updated the status to [" + status.getText() + "].")
+    val status: Status = twitter.updateStatus(putAtMarkToTheUserID(user_id) + " " + sen)
   }
 
   // ユーザIDを取得
@@ -28,5 +26,7 @@ object TweetController {
     twitter.getId
   }
 
+  def putAtMarkToTheUserID(twitter_user_id: String): String =
+    "@" + twitter_user_id.trim.replaceAll("@", "")
 
 }
