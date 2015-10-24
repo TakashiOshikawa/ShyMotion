@@ -1,0 +1,8 @@
+machine:
+  java:
+    version: oraclejdk8
+dependencies:
+  override:
+    - sbt test
+    - java -version
+    - sbt test:compile
