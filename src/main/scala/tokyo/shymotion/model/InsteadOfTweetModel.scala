@@ -19,7 +19,8 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
       case _    => UserDAO.createUser(twitter_user_id).user_id
     }
 
-    TweetController.tweetForUserID(twitter_user_id, body)
+    val tweet_status = TweetController.tweetForUserID(twitter_user_id, body)
+//    System.out.println(tweet_status)
     val ins_tweet = InsteadOfTweetDAO.insertTweet(user_id, Some(body))
     val url = generateURL(ins_tweet.instead_of_tweet_id)
     val tweet_json = Json.toJson( ResInsteadOfTweet(twitter_user_id, url, ins_tweet ) )
@@ -58,7 +59,7 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
   // 投稿時URL生成処理
   def generateURL(ins_tweet_id: Long): String =
-    "http://shymotion.tokyo/tweet/" + ins_tweet_id
+    "http://shymotion.tokyo/instead_tweet/" + ins_tweet_id
 
 
 }

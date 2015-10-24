@@ -18,6 +18,7 @@ object TweetController {
   def tweetForUserID(user_id: String, sen: String) = {
     val twitter = TwitterSingleton.getInstance
     val status: Status = twitter.updateStatus(putAtMarkToTheUserID(user_id) + " " + sen)
+    status
   }
 
   // ユーザIDを取得
