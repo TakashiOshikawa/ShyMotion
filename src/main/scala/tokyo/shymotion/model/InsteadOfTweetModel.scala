@@ -4,7 +4,7 @@ import org.joda.time.DateTime
 import play.api.libs.json.{JsValue, Json}
 import tokyo.shymotion.controller.TweetController
 import tokyo.shymotion.model.DAO.{InsteadOfTweetDAO, UserDAO}
-import tokyo.shymotion.model.table.{ResInsteadOfTweet, InsteadOfTweetTable, InsteadOfTweet, User}
+import tokyo.shymotion.model.table._
 
 /**
  * Created by oshikawatakashi on 2015/10/12.
@@ -38,11 +38,11 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
   // 投稿ツイート取得処理
   def findPostTweet(instead_of_tweet_id: Long): JsValue = {
-    val tweet: Option[List[InsteadOfTweet]] = InsteadOfTweetDAO.findTweetByInsTweetID(instead_of_tweet_id)
+    val tweet: Option[List[UserJoinInsteadOfTweet]] = InsteadOfTweetDAO.findTweetByInsTweetID(instead_of_tweet_id)
     tweet match {
-      case Some(List(InsteadOfTweet(_,_,_,_,_))) => Json.toJson(tweet.head)
-      case Some(_)                    => Json.toJson(InsteadOfTweet(0,0,Some(""),Some(""),DateTime.now()))
-      case None => Json.toJson(InsteadOfTweet(0,0,Some(""),Some(""),DateTime.now()))
+      case Some(List(UserJoinInsteadOfTweet(_,_,_,_,_,_))) => Json.toJson(tweet.head)
+      case Some(_)                    => Json.toJson(UserJoinInsteadOfTweet(0,0,Some(""),Some(""),DateTime.now(),Some("")))
+      case None => Json.toJson(UserJoinInsteadOfTweet(0,0,Some(""),Some(""),DateTime.now(),Some("")))
     }
   }
 
