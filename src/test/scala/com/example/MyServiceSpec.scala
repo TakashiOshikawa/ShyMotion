@@ -14,9 +14,9 @@ class MyServiceSpec extends Specification with Specs2RouteTest with MyService wi
 
     "case class Json" in {
       val time = DateTime.now()
-      val tweet_json = Json.toJson(InsteadOfTweet(0, 0, Some("test"), time))
+      val tweet_json = Json.toJson(InsteadOfTweet(0, 0, Some("test"), Some("nick_name"), time))
       tweet_json.toString mustEqual {
-           s"""{"instead_of_tweet_id":0,"user_id":0,"body":"test","created_at":${time.getMillis}}"""
+           s"""{"instead_of_tweet_id":0,"user_id":0,"body":"test","secret_nick_name":"nick_name","created_at":${time.getMillis}}"""
       }
     }
 

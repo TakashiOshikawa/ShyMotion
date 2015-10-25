@@ -12,7 +12,7 @@ import tokyo.shymotion.model.table.{ResInsteadOfTweet, InsteadOfTweetTable, Inst
 object InsteadOfTweetModel extends InsteadOfTweetTable {
 
   // 投稿ツイート登録処理 Tweet内容をJSON形式で返却する
-  def createPostTweet(twitter_user_id: String, body: String): JsValue = {
+  def createPostTweet(twitter_user_id: String, body: String, secret_nick_name: String): JsValue = {
     val user = UserDAO.isExistTwitterUserID(twitter_user_id).headOption
     val user_id = user match {
       case Some(User(twitter_user_id, body)) => user.get.user_id
@@ -21,7 +21,7 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
     val tweet_status = TweetController.tweetForUserID(twitter_user_id, body)
 //    System.out.println(tweet_status)
-    val ins_tweet = InsteadOfTweetDAO.insertTweet(user_id, Some(body))
+    val ins_tweet = InsteadOfTweetDAO.insertTweet(user_id, Some(body), Some(secret_nick_name))
     val url = generateURL(ins_tweet.instead_of_tweet_id)
     val tweet_json = Json.toJson( ResInsteadOfTweet(twitter_user_id, url, ins_tweet ) )
     tweet_json
@@ -30,8 +30,8 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
   // TEST FUNCTION TODO 後々削除
   def getTestJsonVal() = {
-    val tweet = Json.toJson( InsteadOfTweet(1,1,Some("sss"), DateTime.now() ))
-    val res_tweet = ResInsteadOfTweet("testTwitterID", "http://shymotion.tokyo", InsteadOfTweet(1,1,Some("sss"), DateTime.now()) )
+    val tweet = Json.toJson( InsteadOfTweet(1,1,Some("sss"), Some("ddd"), DateTime.now() ))
+    val res_tweet = ResInsteadOfTweet("testTwitterID", "http://shymotion.tokyo", InsteadOfTweet(1,1,Some("sss"), Some("ddd"), DateTime.now()) )
     Json.toJson( res_tweet )
   }
 
@@ -40,9 +40,9 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
   def findPostTweet(instead_of_tweet_id: Long): JsValue = {
     val tweet: Option[List[InsteadOfTweet]] = InsteadOfTweetDAO.findTweetByInsTweetID(instead_of_tweet_id)
     tweet match {
-      case Some(List(InsteadOfTweet(_,_,_,_))) => Json.toJson(tweet.head)
-      case Some(_)                    => Json.toJson(InsteadOfTweet(0,0,Some(""),DateTime.now()))
-      case None => Json.toJson(InsteadOfTweet(0,0,Some(""),DateTime.now()))
+      case Some(List(InsteadOfTweet(_,_,_,_,_))) => Json.toJson(tweet.head)
+      case Some(_)                    => Json.toJson(InsteadOfTweet(0,0,Some(""),Some(""),DateTime.now()))
+      case None => Json.toJson(InsteadOfTweet(0,0,Some(""),Some(""),DateTime.now()))
     }
   }
 
