@@ -43,12 +43,12 @@ trait MyService extends HttpService {
     } ~
     path("tweet") {
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
-        formFields('user_id, 'body) { (user_id, body) =>
+        formFields('user_id, 'body, 'secret_nick_name) { (user_id, body, secret_nick_name) =>
           validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
             post {
               respondWithMediaType(`application/json`) {
                 complete {
-                  val tweet = InsteadOfTweetModel.createPostTweet(user_id, body)
+                  val tweet = InsteadOfTweetModel.createPostTweet(user_id, body, secret_nick_name)
                   "" + tweet
                 }
               }

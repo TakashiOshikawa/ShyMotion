@@ -24,6 +24,7 @@ case class InsteadOfTweet
     instead_of_tweet_id: Long,
     user_id: Long,
     body: Option[String] = None,
+    secret_nick_name: Option[String] = None,
     created_at: DateTime
   )
 
@@ -42,6 +43,7 @@ object InsteadOfTweetTable {
     instead_of_tweet_id = res.long("instead_of_tweet_id"),
     user_id = res.long("user_id"),
     body = res.stringOpt("body"),
+    secret_nick_name = res.stringOpt("secret_nick_name"),
     created_at = res.jodaDateTime("created_at")
   )
 
