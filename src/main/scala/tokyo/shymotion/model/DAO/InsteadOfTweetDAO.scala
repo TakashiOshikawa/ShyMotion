@@ -3,7 +3,7 @@ package tokyo.shymotion.model.DAO
 import org.joda.time.DateTime
 import scalikejdbc._
 import tokyo.shymotion.model.DBAccess
-import tokyo.shymotion.model.table.{InsteadOfTweet, InsteadOfTweetTable}
+import tokyo.shymotion.model.table.{UserJoinInsteadOfTweet, InsteadOfTweet, InsteadOfTweetTable}
 
 /**
  * Created by oshikawatakashi on 2015/10/12.
@@ -11,10 +11,10 @@ import tokyo.shymotion.model.table.{InsteadOfTweet, InsteadOfTweetTable}
 object InsteadOfTweetDAO extends DBAccess {
 
 
-  def findTweetByInsTweetID(instead_of_tweet_id: Long): Option[List[InsteadOfTweet]] = {
+  def findTweetByInsTweetID(instead_of_tweet_id: Long): Option[List[UserJoinInsteadOfTweet]] = {
     val tweet = DB readOnly { implicit session =>
-      sql"SELECT * FROM instead_of_tweet WHERE instead_of_tweet_id = ${instead_of_tweet_id}"
-        .map(InsteadOfTweetTable.allColumn).list.apply()
+      sql"SELECT * FROM instead_of_tweet LEFT JOIN user USING (user_id) WHERE instead_of_tweet_id = ${instead_of_tweet_id}"
+        .map(InsteadOfTweetTable.userJoinColumn).list.apply()
     }
     Some(tweet)
   }
