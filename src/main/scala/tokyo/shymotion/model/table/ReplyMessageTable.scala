@@ -20,6 +20,7 @@ case class ReplyMessage
       reply_message_id: Long,
       instead_of_tweet_id: Long,
       body: Option[String],
+      secret_nick_name: Option[String],
       created_at: DateTime
     )
 
@@ -29,6 +30,7 @@ object ReplyMessageTable {
     reply_message_id = res.long("reply_message_id"),
     instead_of_tweet_id = res.long("instead_of_tweet_id"),
     body = res.stringOpt("body"),
+    secret_nick_name = res.stringOpt("secret_nick_name"),
     created_at = res.jodaDateTime("created_at")
   )
 

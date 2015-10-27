@@ -10,17 +10,17 @@ import tokyo.shymotion.model.table.{ReplyMessage, ReplyMessageTable}
  */
 object ReplyMessageModel extends ReplyMessageTable {
 
-  def insertReplyMessage(instead_of_tweet: Long, body: Option[String]): JsValue = {
-    val rep_msg = ReplyMessageDAO.insertReplyMessage(instead_of_tweet, body)
+  def insertReplyMessage(instead_of_tweet: Long, body: Option[String], secret_nick_name: Option[String]): JsValue = {
+    val rep_msg = ReplyMessageDAO.insertReplyMessage(instead_of_tweet, body, secret_nick_name)
     Json.toJson(rep_msg)
   }
 
   def findReplyMessage(instead_of_tweet_id: Long, start: Long, num: Long): JsValue = {
     val res_msg = ReplyMessageDAO.findReplysByInsTweetID(instead_of_tweet_id, start, num)
     res_msg match {
-      case Some( List(ReplyMessage(_,_,_,_), _*) ) => Json.toJson(res_msg.head)
-      case Some(_)                                 => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
-      case None                                    => Json.toJson(ReplyMessage(0,0,Some(""),DateTime.now()))
+      case Some( List(ReplyMessage(_,_,_,_,_), _*) ) => Json.toJson(res_msg.head)
+      case Some(_)                                 => Json.toJson(ReplyMessage(0,0,Some(""),Some(""),DateTime.now()))
+      case None                                    => Json.toJson(ReplyMessage(0,0,Some(""),Some(""),DateTime.now()))
     }
   }
 
