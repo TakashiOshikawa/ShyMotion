@@ -71,11 +71,11 @@ trait MyService extends HttpService {
     } ~
     path("reply" / IntNumber ) { instead_of_tweet_id =>
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
-        formFields('body) { body =>
+        formFields('body, 'secret_nick_name) { (body, secret_nick_name) =>
           post {
             respondWithMediaType(`application/json`) {
               complete {
-                val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body))
+                val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body), Some(secret_nick_name))
                 res_msg + ""
               }
             }

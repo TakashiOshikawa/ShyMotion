@@ -18,11 +18,11 @@ object ReplyMessageDAO extends DBAccess {
     Some(rep_msg)
   }
 
-  def insertReplyMessage(instead_of_tweet_id: Long, body: Option[String]): ReplyMessage = {
+  def insertReplyMessage(instead_of_tweet_id: Long, body: Option[String], secret_nick_name: Option[String]): ReplyMessage = {
     DB localTx { implicit session =>
-      val reply_message_id = sql"INSERT INTO reply_message (instead_of_tweet_id, body) values (${instead_of_tweet_id}, ${body})"
+      val reply_message_id = sql"INSERT INTO reply_message (instead_of_tweet_id, body, secret_nick_name) values (${instead_of_tweet_id}, ${body}, ${secret_nick_name})"
         .updateAndReturnGeneratedKey.apply()
-      ReplyMessage(reply_message_id, instead_of_tweet_id, body, DateTime.now)
+      ReplyMessage(reply_message_id, instead_of_tweet_id, body, secret_nick_name, DateTime.now)
     }
   }
 
