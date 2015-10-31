@@ -42,7 +42,7 @@ trait MyService extends HttpService {
       }
     } ~
     path("tweet") {
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         formFields('user_id, 'body, 'secret_nick_name) { (user_id, body, secret_nick_name) =>
           validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
             post {
@@ -58,7 +58,7 @@ trait MyService extends HttpService {
       }
     } ~
     path("tweet" / IntNumber ) { instead_of_tweet_id =>
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         get {
           respondWithMediaType(`application/json`) {
             complete {
@@ -70,7 +70,7 @@ trait MyService extends HttpService {
       }
     } ~
     path("reply" / IntNumber ) { instead_of_tweet_id =>
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         formFields('body, 'secret_nick_name) { (body, secret_nick_name) =>
           post {
             respondWithMediaType(`application/json`) {
@@ -84,7 +84,7 @@ trait MyService extends HttpService {
       }
     } ~
     path("reply" / IntNumber / IntNumber / IntNumber ) { (instead_of_tweet_id, start, num) =>
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         validate(start >= 1, s"Invalid Request!") {
           get {
             respondWithMediaType(`application/json`) {
@@ -98,7 +98,7 @@ trait MyService extends HttpService {
       }
     } ~
     path("tweetbyuserid" / Segment ) { twitter_user_id =>
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://localhost:4000")) {
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         validate(twitter_user_id.nonEmpty, s"Invalid Request") {
           get {
             respondWithMediaType(`application/json`) {
