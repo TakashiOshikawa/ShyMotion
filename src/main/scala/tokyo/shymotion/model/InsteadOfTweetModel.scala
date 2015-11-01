@@ -52,7 +52,7 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
     val user = UserDAO.isExistTwitterUserID(twitter_user_id).headOption
     user match {
       case Some(_) => Json.toJson( InsteadOfTweetDAO.findTweetByUserID(user.get.user_id, start, length) )
-      case None => Json.toJson( InsteadOfTweetDAO.findTweetByUserID( 0, 0, 0 ) )
+      case None => Json.toJson( InsteadOfTweetDAO.findTweetByUserID( 0, 1, 0 ) )
     }
   }
 
