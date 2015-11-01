@@ -97,13 +97,13 @@ trait MyService extends HttpService {
         }
       }
     } ~
-    path("tweetbyuserid" / Segment ) { twitter_user_id =>
+    path("tweetbyuserid" / Segment / IntNumber / IntNumber ) { (twitter_user_id, start, num) =>
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
-        validate(twitter_user_id.nonEmpty, s"Invalid Request") {
+        validate(twitter_user_id.nonEmpty && start >= 1, s"Invalid Request") {
           get {
             respondWithMediaType(`application/json`) {
               complete {
-                val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id)
+                val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id, start, num)
                 tweets + ""
               }
             }

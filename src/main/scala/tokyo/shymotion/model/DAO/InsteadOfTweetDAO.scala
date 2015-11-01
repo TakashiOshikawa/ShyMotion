@@ -19,9 +19,9 @@ object InsteadOfTweetDAO extends DBAccess {
     Some(tweet)
   }
 
-  def findTweetByUserID(user_id: Long): List[InsteadOfTweet] = {
+  def findTweetByUserID(user_id: Long, start: Long, length: Long): List[InsteadOfTweet] = {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM instead_of_tweet WHERE user_id = ${user_id}"
+      sql"SELECT * FROM instead_of_tweet WHERE user_id = ${user_id} ORDER BY instead_of_tweet_id DESC LIMIT ${start-1}, ${length}"
         .map(InsteadOfTweetTable.allColumn).list.apply()
     }
   }
