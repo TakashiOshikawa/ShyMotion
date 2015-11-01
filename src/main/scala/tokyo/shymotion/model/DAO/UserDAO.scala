@@ -13,7 +13,7 @@ object UserDAO extends DBAccess {
   // ユーザが存在するかチェック
   def isExistTwitterUserID(twitter_user_id: String): List[User] = {
     DB readOnly { implicit session =>
-      sql"SELECT * FROM user WHERE twitter_user_id = ${twitter_user_id}"
+      sql"SELECT * FROM user WHERE twitter_user_id = ${twitter_user_id.trim.replaceAll("@", "")}"
         .map(UserTable.allColumn).list.apply()
     }
   }
@@ -21,7 +21,7 @@ object UserDAO extends DBAccess {
 
   def createUser(twitter_user_id: String): User = {
     DB localTx { implicit session =>
-      val user_id = sql"INSERT INTO user (twitter_user_id) values (${twitter_user_id})"
+      val user_id = sql"INSERT INTO user (twitter_user_id) values (${twitter_user_id.trim.replaceAll("@", "")})"
         .updateAndReturnGeneratedKey.apply()
       User(user_id, twitter_user_id)
     }
