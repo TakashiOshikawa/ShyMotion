@@ -19,11 +19,12 @@ object InsteadOfTweetDAO extends DBAccess {
     Some(tweet)
   }
 
-  def findTweetByUserID(user_id: Long, start: Long, length: Long): List[UserJoinInsteadOfTweet] = {
-    DB readOnly { implicit session =>
+  def findTweetByUserID(user_id: Long, start: Long, length: Long): Option[List[UserJoinInsteadOfTweet]] = {
+    val tweet = DB readOnly { implicit session =>
       sql"SELECT * FROM instead_of_tweet LEFT JOIN user USING (user_id) WHERE user_id = ${user_id} ORDER BY instead_of_tweet_id DESC LIMIT ${start-1}, ${length}"
         .map(InsteadOfTweetTable.userJoinColumn).list.apply()
     }
+    Some(tweet)
   }
 
   def insertTweet(user_id: Long, body: Option[String], secret_nick_name: Option[String]): InsteadOfTweet = {

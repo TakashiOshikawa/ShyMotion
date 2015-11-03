@@ -103,7 +103,7 @@ trait MyService extends HttpService {
           get {
             respondWithMediaType(`application/json`) {
               complete {
-                val tweets = InsteadOfTweetModel.findTweetByUserID(twitter_user_id, start, num)
+                val tweets = InsteadOfTweetModel.findTweetByTwitterUserID(twitter_user_id, start, num)
                 tweets + ""
               }
             }

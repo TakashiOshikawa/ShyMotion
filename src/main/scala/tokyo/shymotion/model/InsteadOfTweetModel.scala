@@ -48,11 +48,11 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
 
 
   // TwitterユーザIDからTweetを取得
-  def findTweetByUserID(twitter_user_id: String, start: Long, length: Long): JsValue = {
+  def findTweetByTwitterUserID(twitter_user_id: String, start: Long, length: Long): JsValue = {
     val user = UserDAO.isExistTwitterUserID(twitter_user_id).headOption
     user match {
       case Some(_) => Json.toJson( InsteadOfTweetDAO.findTweetByUserID(user.get.user_id, start, length) )
-      case None => Json.toJson( InsteadOfTweetDAO.findTweetByUserID( 0, 1, 0 ) )
+      case None => Json.toJson( UserJoinInsteadOfTweet(0,0,Some(""),Some(""),DateTime.now(),Some("")) )
     }
   }
 
