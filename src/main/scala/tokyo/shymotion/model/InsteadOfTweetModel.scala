@@ -19,10 +19,10 @@ object InsteadOfTweetModel extends InsteadOfTweetTable {
       case _    => UserDAO.createUser(twitter_user_id).user_id
     }
 
-    val tweet_status = TweetController.tweetForUserID(twitter_user_id, body)
-//    System.out.println(tweet_status)
     val ins_tweet = InsteadOfTweetDAO.insertTweet(user_id, Some(body), Some(secret_nick_name))
     val url = generateURL(ins_tweet.instead_of_tweet_id)
+
+    val tweet_status = TweetController.tweetForUserID(twitter_user_id, body, url, secret_nick_name)
     val tweet_json = Json.toJson( ResInsteadOfTweet(twitter_user_id, url, ins_tweet ) )
     tweet_json
   }
