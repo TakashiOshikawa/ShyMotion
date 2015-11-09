@@ -43,8 +43,8 @@ trait MyService extends HttpService {
     } ~
     path("tweet") {
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
-        formFields('user_id, 'body, 'secret_nick_name) { (user_id, body, secret_nick_name) =>
-          validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
+        formFields('user_id, 'body, 'secret_nick_name) { (user_id: String, body: String, secret_nick_name: String) =>
+          validate(user_id.nonEmpty && body.nonEmpty && body.length <= 140 && user_id.length <= 15 && secret_nick_name.length <= 256, s"Invalid Request") {
             post {
               respondWithMediaType(`application/json`) {
                 complete {
@@ -71,12 +71,14 @@ trait MyService extends HttpService {
     } ~
     path("reply" / IntNumber ) { instead_of_tweet_id =>
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
-        formFields('body, 'secret_nick_name) { (body, secret_nick_name) =>
-          post {
-            respondWithMediaType(`application/json`) {
-              complete {
-                val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body), Some(secret_nick_name))
-                res_msg + ""
+        formFields('body, 'secret_nick_name) { (body: String, secret_nick_name: String) =>
+          validate(body.length <= 140 && secret_nick_name.length <= 256, s"Invalid Request!") {
+            post {
+              respondWithMediaType(`application/json`) {
+                complete {
+                  val res_msg = ReplyMessageModel.insertReplyMessage(instead_of_tweet_id, Some(body), Some(secret_nick_name))
+                  res_msg + ""
+                }
               }
             }
           }

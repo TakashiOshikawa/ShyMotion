@@ -1,5 +1,6 @@
 package tokyo.shymotion.controller
 
+import tokyo.shymotion.model.TweetModel
 import twitter4j.Status
 
 /**
@@ -15,9 +16,11 @@ object TweetController {
   }
 
   // 指定ユーザに対してのツイートを行う
-  def tweetForUserID(user_id: String, sen: String) = {
+  // TODO user_id + sentence + urlが必要
+  def tweetForUserID(user_id: String, sen: String, url: String, secret_nickname: String) = {
     val twitter = TwitterSingleton.getInstance
-    val status: Status = twitter.updateStatus(putAtMarkToTheUserID(user_id) + " " + sen)
+    val tweet_content = TweetModel.genTweetContent( putAtMarkToTheUserID(user_id), sen, url )
+    val status: Status = twitter.updateStatus( tweet_content )
     status
   }
 
