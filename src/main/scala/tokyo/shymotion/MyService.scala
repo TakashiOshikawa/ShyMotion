@@ -42,15 +42,9 @@ trait MyService extends HttpService {
       }
     } ~
     path("tweet") {
-<<<<<<< HEAD
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://shymotion.tokyo")) {
-        formFields('user_id, 'body, 'secret_nick_name) { (user_id, body, secret_nick_name) =>
-          validate(user_id.nonEmpty && body.nonEmpty, s"Invalid Request") {
-=======
-      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         formFields('user_id, 'body, 'secret_nick_name) { (user_id: String, body: String, secret_nick_name: String) =>
           validate(user_id.nonEmpty && body.nonEmpty && body.length <= 140 && user_id.length <= 15 && secret_nick_name.length <= 256, s"Invalid Request") {
->>>>>>> FETCH_HEAD
             post {
               respondWithMediaType(`application/json`) {
                 complete {
