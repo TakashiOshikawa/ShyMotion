@@ -19,7 +19,7 @@ object TweetController {
   // TODO user_id + sentence + urlが必要
   def tweetForUserID(user_id: String, sen: String, url: String, secret_nickname: String) = {
     val twitter = TwitterSingleton.getInstance
-    val tweet_content = TweetModel.genTweetContent( putAtMarkToTheUserID(user_id), sen, url )
+    val tweet_content = TweetModel.genTweetContent( putAtMarkToTheUserID(user_id), sen, url ,secret_nickname)
     val status: Status = twitter.updateStatus( tweet_content )
     status
   }

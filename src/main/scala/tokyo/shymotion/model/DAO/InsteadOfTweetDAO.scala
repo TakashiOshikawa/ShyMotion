@@ -28,9 +28,10 @@ object InsteadOfTweetDAO extends DBAccess {
   }
 
   def insertTweet(user_id: Long, body: Option[String], secret_nick_name: Option[String]): InsteadOfTweet = {
+    val ins_nick_name = if (secret_nick_name.getOrElse("").length == 0) "名無しさん" else secret_nick_name.getOrElse("")
     DB localTx { implicit session =>
       val instead_of_tweet_id =
-        sql"INSERT INTO instead_of_tweet (user_id, body, secret_nick_name) values (${user_id}, ${body.getOrElse("")}, ${secret_nick_name.getOrElse("")})"
+        sql"INSERT INTO instead_of_tweet (user_id, body, secret_nick_name) values (${user_id}, ${body.getOrElse("")}, ${ins_nick_name})"
         .updateAndReturnGeneratedKey.apply()
       InsteadOfTweet(instead_of_tweet_id, user_id, body, secret_nick_name, DateTime.now())
     }
