@@ -99,6 +99,20 @@ trait MyService extends HttpService {
         }
       }
     } ~
+    path("newreply" / IntNumber / IntNumber ) { (start, num) =>
+      respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
+        validate(start >= 1, s"Invalid Request!") {
+          get {
+            respondWithMediaType(`application/json`) {
+              complete {
+                val rep_msg = ReplyMessageModel.getReplyMessageAtNewOrder(start, num)
+                rep_msg + ""
+              }
+            }
+          }
+        }
+      }
+    } ~
     path("tweetbyuserid" / Segment / IntNumber / IntNumber ) { (twitter_user_id, start, num) =>
       respondWithHeader(RawHeader("Access-Control-Allow-Origin", "http://127.0.0.1:4000")) {
         validate(twitter_user_id.nonEmpty && start >= 1, s"Invalid Request") {
